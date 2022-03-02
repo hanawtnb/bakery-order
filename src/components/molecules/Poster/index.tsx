@@ -2,7 +2,7 @@ import React, { memo, VFC } from "react";
 import getConfig from "next/config";
 
 import styles from "./styles.module.scss";
-import Count from "../Count";
+import Quantity from "../Quantity";
 import { useQuery } from "@apollo/client";
 import { ItemQUERY } from "api/query";
 import Link from "next/link";
