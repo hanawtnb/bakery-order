@@ -2,9 +2,11 @@ import { gql } from "@apollo/client";
 
 export const MenuQUERY = gql`
   query getTodaysMenu {
-    todaysMenus {
+    menus {
       data {
+        id
         attributes {
+          date
           items {
             data {
               attributes {
@@ -44,6 +46,19 @@ export const ItemQUERY = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const RegisterMUTATION = gql`
+  mutation Register($input: UsersPermissionsRegisterInput!) {
+    register(input: $input) {
+      jwt
+      user {
+        id
+        username
+        email
       }
     }
   }
