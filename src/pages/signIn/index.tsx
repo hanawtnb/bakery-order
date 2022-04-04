@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,7 @@ interface IFormInput {
 }
 
 const SignIn: NextPage = () => {
+  const router = useRouter();
   const [signin, { loading, error }] = useMutation(LoginMUTATION, {
     onCompleted: (res) => {
       localStorage.setItem("token", res.login.jwt);
@@ -35,6 +37,7 @@ const SignIn: NextPage = () => {
       },
     });
     console.log(errors);
+    router.push("/menu");
   };
 
   useEffect(() => {
