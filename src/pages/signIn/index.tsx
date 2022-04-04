@@ -3,8 +3,11 @@ import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { LoginMUTATION } from "api/query";
+import { PrimaryInput } from "src/components/atoms/input";
 
 interface IFormInput {
   firstName: String;
@@ -21,11 +24,25 @@ const SignIn: NextPage = () => {
     },
   });
 
+  /**
+   * バリデーション.
+   */
+  let schema = yup.object().shape({
+    email: yup.string().email().required("Please enter your email"),
+    password: yup
+      .string()
+      .required("Please Enter your password")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+      ),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput | any>({ resolver: yupResolver(schema) });
   const onSubmit = (data: any) => {
     console.log(data);
     signin({
@@ -40,25 +57,23 @@ const SignIn: NextPage = () => {
     router.push("/menu");
   };
 
-  useEffect(() => {
-    if (document) console.log(document.cookie);
-  }, []);
-
   return (
     <>
       <div>SignIn</div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
+        <PrimaryInput
           type="email"
           placeholder="Email"
-          {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-          // {...(errors.email && "Email is required")}
+          label="Email"
+          register={register("email")}
+          errorMessage={errors.email?.message}
         />
-        <input
+        <PrimaryInput
           type="password"
           placeholder="Password"
-          {...register("password", { required: true, min: 8 })}
-          // {...(errors.password && "Password is required")}
+          label="Password"
+          register={register("password")}
+          errorMessage={errors.password?.message}
         />
 
         <input type="submit" />
