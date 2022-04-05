@@ -2,19 +2,21 @@ import { gql } from "@apollo/client";
 
 export const MenuQUERY = gql`
   query menus {
-    menus {
+    menu {
       data {
         id
         attributes {
-          date
+          published
           items {
             data {
+              id
               attributes {
                 name
                 description
                 price
                 image {
                   data {
+                    id
                     attributes {
                       url
                     }
@@ -71,6 +73,47 @@ export const LoginMUTATION = gql`
       user {
         id
         email
+      }
+    }
+  }
+`;
+
+export const CartQUERY = gql`
+  query cart {
+    carts {
+      data {
+        id
+        attributes {
+          users_permissions_user {
+            data {
+              id
+              attributes {
+                cart {
+                  data {
+                    attributes {
+                      items {
+                        data {
+                          id
+                          attributes {
+                            name
+                            price
+                            image {
+                              data {
+                                attributes {
+                                  url
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
