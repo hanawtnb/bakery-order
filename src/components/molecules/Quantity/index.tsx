@@ -1,7 +1,10 @@
-/* eslint-disable react/display-name */
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 
-const Quantity = () => {
+type Props = {
+  qtyFunc: (args: any) => void;
+};
+
+const Quantity: FC<Props> = ({ qtyFunc }) => {
   const [quantity, setQuantity] = useState(0);
 
   const onCLickCountdown = () => {
@@ -14,6 +17,8 @@ const Quantity = () => {
   const onClickCountUp = () => {
     setQuantity(quantity + 1);
   };
+
+  qtyFunc(quantity);
 
   return (
     <div className="quantity">
