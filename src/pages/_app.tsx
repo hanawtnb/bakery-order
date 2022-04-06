@@ -10,6 +10,7 @@ import { LocalStorageWrapper, persistCache } from "apollo3-cache-persist";
 import client from "../../graphql/apollo";
 import "../../styles/globals.scss";
 import getConfig from "next/config";
+import { RecoilRoot } from "recoil";
 
 const { publicRuntimeConfig: config } = getConfig();
 
@@ -31,9 +32,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     cache,
   });
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <RecoilRoot>
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </RecoilRoot>
   );
 };
 
